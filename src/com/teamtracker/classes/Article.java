@@ -10,6 +10,7 @@ public class Article {
 	private String articleURL;
 	private String imageURLS;
 	private String author;
+	private String headertext;
 	
 	public Article() {}
 	
@@ -19,6 +20,7 @@ public class Article {
 	public String getArticleURL() { return articleURL; }
 	public String getImageURLS() { return imageURLS; }
 	public String getAuthor() { return author; }
+	public String getHeaderText() { return headertext; }
 	
 	public void setArticleID(int id) { this.articleID = id; }
 	public void setTitle(String title) { this.title = title; }
@@ -27,5 +29,5 @@ public class Article {
 	public void setImageURLS(String urls) { this.imageURLS = urls; }	
 	public void setArticleURL(String url) { this.articleURL = url; }
 	public void setAuthor(String author) { this.author = author; }
-	
+	public void setHeaderText(String headertext) { this.headertext = headertext; }
 }
