@@ -11,11 +11,7 @@ project for CS490: Web Info Retrieval class.
 4. Classify articles in the database to teams through NLTK.
 5. Display output!
 
-Tools and technology:
-1. NLTK: http://nltk.org/install.html
-2. Java
-3. JDBC?
-4. MySQL
-
-Ideas:
-1. Only scrap from Guardian for now. Only deal with current EPL teams for now.
+Future objectives:
+- scrap from ESPN
+- use Sax XML parsing instead of DOM
+- write a scheduler to scrap at every day/hour
