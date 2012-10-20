@@ -21,9 +21,7 @@ public class GuardianScraper {
 	// time for illegal scraping!
 	public void scrap()
 	{
-		ArrayList<Article> list = new ArrayList<Article>();
-	//	String root 
-		
+		ArrayList<Article> list = new ArrayList<Article>();		
 	}
 	
 	public ArrayList<Article> retrieveFromAPI()

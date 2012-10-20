@@ -8,10 +8,11 @@ public class ScraperService {
 
 	public static void main(String[] args) {
 		SQLHelper sqlhelper = new SQLHelper();
-		GuardianScraper scraper = new GuardianScraper();
+		GuardianScraper gscraper = new GuardianScraper();
+		ESPNScraper escraper = new ESPNScraper();
 		
-		ArrayList<Article> articles = scraper.retrieveFromAPI();
-		
+		//ArrayList<Article> articles = gscraper.retrieveFromAPI();
+		ArrayList<Article> earticles = escraper.scrap();
 		
 	}
 }
