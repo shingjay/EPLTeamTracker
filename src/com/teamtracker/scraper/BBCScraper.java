@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import com.teamtracker.classes.Article;
 
 public class BBCScraper implements Scraper {
 	
-	private int DEBUG = 0;
+	private int DEBUG = 1;
+	
 	public ArrayList<Article> scrap()  
 	{
 		ArrayList<Article> articles = new ArrayList<Article>();
@@ -28,64 +28,77 @@ public class BBCScraper implements Scraper {
 			
 			for (Element temp : headlineElements)
 			{
-				Article article = new Article();
-				article.setSource(2);
-				
+				boolean isPreMatchReview = false;
+				boolean isLiveCommentary = false;
+						
 				String generalURL = temp.attr("href");
+				
 				// ignore extra urls, eg: /sport/teams/manchester-united
 				if (!generalURL.substring(7,8).equals("0")) continue;
 				// ignore urls to go into /sport/0/football/womens/
 				if (!isInteger(generalURL.substring(18,generalURL.length()))) continue;
 				
-				String currURL = bbcURL + temp.attr("href");
-				article.setArticleURL(currURL);
+				String currURL = bbcURL + temp.attr("href");				
+				
 				Document _doc = Jsoup.connect(currURL).get();
 				
-				//Elements articleElements = articleElement.getAllElements();
 				String header = _doc.getElementsByClass("introduction").get(0).text();
+							
+				String articleTitle = temp.text();				
+				if (articleTitle.indexOf(" v ") != -1) isPreMatchReview = true;
+				
+				String date = _doc.getElementsByClass("date").get(0).text();
+								
+				Elements paragraphElements = _doc.getElementsByTag("p");
+				int paragraphCount = paragraphElements.size();
+				if (isPreMatchReview) 
+					paragraphCount -= 3;
+				
+				for (int i = 2 ; i < paragraphCount - 3; i++)
+				{
+					String line = paragraphElements.get(i).text();
+					if (line.isEmpty()) continue;
+					if (line.indexOf("Please turn on JavaScript. Media requires JavaScript to play.") != -1) continue;
+					if (line.indexOf("BST") != -1) continue;
+					if (line.indexOf("GMT") != -1) continue;
+					if (line.indexOf("Last updated") != -1) {
+						isLiveCommentary = true;
+						break;
+					}
+					System.out.println(line);
+				}
+				
+				if (isLiveCommentary) continue;
+				
+				// finally set article properties here
+				Article article = new Article();
+				article.setSource(2);
+				article.setArticleURL(currURL);
+				article.setTitle(articleTitle);
 				article.setHeaderText(header);
 				
-				// if title exists in the document then set it
-				if (_doc.getElementById("headline").hasText()) 
-					article.setTitle(_doc.getElementById("headline").text());
-				// if it doesn't exist have to find for it
-				// else				
-				
-				// gets the date of the article
-				String date = _doc.getElementsByClass("date").get(0).text();
-				
-				String text = "";
-
-
-
-//				for (Element _e : _el)
-//				{
-//				 	System.out.println(_e.className());
-//					//if (_e.hasClass("introduction")) continue;
-//					text += _e.text();
-//					//System.out.println(_e.toString());
-//					
-//				}
 				if (DEBUG == 1) {
 					System.out.println("Url : " + article.getArticleURL());
 					System.out.println("header: " + article.getHeaderText());
 					System.out.println("title: " + article.getTitle());
 					System.out.println("date : " + date);
-					System.out.println("text : " + text);
+					System.out.println("isPrematchreview " + isPreMatchReview);
+					System.out.println("isLiveCommentary " + isLiveCommentary);
 					System.out.println();
 				}
 				System.out.println();
 				
 			}
 			
-//			// get 'comment and analysis'
-//			Element commentElement = doc.getElementById("comment-and-analysis");
-//			Elements commentElements = commentElement.getElementsByTag("a");
-//			
-//			for (Element temp : commentElements) 
-//			{
-//				//System.out.println(temp.toString());
-//			}
+			//TODO: work on getting comments and analysis
+			// get 'comment and analysis'
+			Element commentElement = doc.getElementById("comment-and-analysis");
+			Elements commentElements = commentElement.getElementsByTag("a");
+			
+			for (Element temp : commentElements) 
+			{
+				//System.out.println(temp.toString());
+			}
 		} 
 		catch (Exception e) {
 			System.out.println(e.getMessage());
