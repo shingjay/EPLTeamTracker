@@ -15,3 +15,9 @@ Future objectives:
 - scrap from ESPN
 - use Sax XML parsing instead of DOM
 - write a scheduler to scrap at every day/hour
+- batch insertion to db?
+- other sites to consider:
+	Telegraph.co.uk
+	Reuters/Football
+	Goal.com?
+- now trending feature

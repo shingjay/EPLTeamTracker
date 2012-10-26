@@ -10,9 +10,9 @@ public class ScraperService {
 		SQLHelper sqlhelper = new SQLHelper();
 		GuardianScraper gscraper = new GuardianScraper();
 		ESPNScraper escraper = new ESPNScraper();
-		
+		BBCScraper bscraper = new BBCScraper();
 		//ArrayList<Article> articles = gscraper.retrieveFromAPI();
-		ArrayList<Article> earticles = escraper.scrap();
-		
+		//ArrayList<Article> earticles = escraper.scrap();
+		ArrayList<Article> barticles = bscraper.scrap();
 	}
 }

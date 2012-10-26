@@ -11,9 +11,11 @@ public class Article {
 	private String imageURLS;
 	private String author;
 	private String headertext;
+	private int source;
 	
 	public Article() {}
 	
+	public int getSource() { return source; }
 	public String getTitle() { return title; }
 	public String getContent() { return content; }
 	public Date getArticleCreation() { return articleCreation; }
@@ -22,6 +24,7 @@ public class Article {
 	public String getAuthor() { return author; }
 	public String getHeaderText() { return headertext; }
 	
+	public void setSource(int source) { this.source = source; }
 	public void setArticleID(int id) { this.articleID = id; }
 	public void setTitle(String title) { this.title = title; }
 	public void setContent(String content) { this.content = content; }

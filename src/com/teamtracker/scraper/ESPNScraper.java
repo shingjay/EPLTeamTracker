@@ -1,17 +1,19 @@
 package com.teamtracker.scraper;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.teamtracker.classes.*;
-import org.jsoup.*;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.*;
+import org.jsoup.select.Elements;
 
-public class ESPNScraper {
+import com.teamtracker.classes.Article;
 
+public class ESPNScraper implements Scraper {
+
+	private int DEBUG = 1;
+	
 	public ArrayList<Article> scrap() 
 	{
 		String url = "http://soccernet.espn.go.com/news/archive?cc=5901";
@@ -20,26 +22,38 @@ public class ESPNScraper {
 		String espnURL = "http://soccernet.espn.go.com";
 		
 		try {
+			int ij = 0;
 			Document doc = Jsoup.connect(url).get();
 			Elements elements = doc.getElementsByClass("result");
 			for (Element e : elements)
 			{
-				Article article = new Article();
+				if (DEBUG == 1) 
+					System.out.println("Iteration : " + ij++);
 				
+				Article article = new Article();
+				article.setSource(3);
 				// get and set article url 
 				Elements temp = e.getElementsByTag("a");
 				String currentURL = (espnURL + temp.attr("href"));
+				if (DEBUG == 1) 
+					System.out.println("url : " + currentURL);
+				
 				article.setArticleURL(currentURL);
 				
 				// get and set article title
 				String title = e.getElementsByTag("a").get(0).text();
+				if (DEBUG == 1) 
+					System.out.println("title: " + title);
 				article.setTitle(title);
 				
 				// TODO somehow something is wrong here!
 	
 				// get and set headertext
-				//String header = e.getElementsByTag("p").get(0).text();
-				//article.setHeaderText(header);
+				String header = e.getElementsByTag("p").get(0).text();
+				article.setHeaderText(header);
+				if (DEBUG == 1)
+					System.out.println("header : " + header);
+				
 				
 				// getting results and date of article
 				String strResults = e.getElementsByTag("span").get(0).text();
@@ -72,13 +86,28 @@ public class ESPNScraper {
 				}
 				article.setAuthor(author.toString());
 				article.setDateTime(new Date());
-
+				if (DEBUG == 1) System.out.println("Author : " + article.getAuthor());
+				
+				
+				String content = "";
+				
 				// go into the link
 				Document _doc = Jsoup.connect(currentURL).get();
-				Element _element = _doc.getElementsByTag("p").get(0);
+				// get all <p> elements instead of just 1, so now have to clear
+				Elements _elements = _doc.getElementsByTag("p");
 				//System.out.println(article.getArticleURL());
-				System.out.println(_element.text());
+				//System.out.println(_element.text());
+				for (Element _element : _elements)
+				{
+
+					content += _element.text();
+				}
 				
+				if (DEBUG == 1)
+				{
+					System.out.println(content);
+					System.out.println();
+				}
 			}
 		} catch (Exception e)
 		{

@@ -13,15 +13,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 import java.util.Date;
 
-public class GuardianScraper {
+public class GuardianScraper implements Scraper{
 	
 	private String apiKey = "4ujzha4x7ref5phcaxms7y56";
 	
 	
 	// time for illegal scraping!
-	public void scrap()
+	public ArrayList<Article> scrap()
 	{
 		ArrayList<Article> list = new ArrayList<Article>();		
+		return list;
 	}
 	
 	public ArrayList<Article> retrieveFromAPI()
@@ -38,6 +39,7 @@ public class GuardianScraper {
 			for (int i = 0 ; i < articleNodes.getLength() ; i++)
 			{
 				Article article = new Article();
+				article.setSource(1);
 				Node node = articleNodes.item(i);
 				
 				if (node.getNodeType() != Node.ELEMENT_NODE) continue;
