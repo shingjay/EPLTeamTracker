@@ -88,6 +88,7 @@ public class BBCScraper implements Scraper {
 				}
 				System.out.println();
 				
+				articles.add(article);
 			}
 			
 			//TODO: work on getting comments and analysis
