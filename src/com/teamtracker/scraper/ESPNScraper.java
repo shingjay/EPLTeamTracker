@@ -84,9 +84,9 @@ public class ESPNScraper implements Scraper {
 					author.delete(author.length() - 1, author.length());
 					//date.delete(0, 1);
 				}
-				article.setAuthor(author.toString());
+				//article.setAuthor(author.toString());
 				article.setDateTime(new Date());
-				if (DEBUG == 1) System.out.println("Author : " + article.getAuthor());
+				//if (DEBUG == 1) System.out.println("Author : " + article.getAuthor());
 				
 				
 				String content = "";

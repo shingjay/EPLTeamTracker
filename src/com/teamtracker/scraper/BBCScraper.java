@@ -1,6 +1,8 @@
 package com.teamtracker.scraper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,7 +13,7 @@ import com.teamtracker.classes.Article;
 
 public class BBCScraper implements Scraper {
 	
-	private int DEBUG = 1;
+	private int DEBUG = 0;
 	
 	public ArrayList<Article> scrap()  
 	{
@@ -46,15 +48,19 @@ public class BBCScraper implements Scraper {
 							
 				String articleTitle = temp.text();				
 				if (articleTitle.indexOf(" v ") != -1) isPreMatchReview = true;
-				
+					
 				String date = _doc.getElementsByClass("date").get(0).text();
-								
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+				Date newDate = dateFormat.parse(date);
+				
+				
 				Elements paragraphElements = _doc.getElementsByTag("p");
 				int paragraphCount = paragraphElements.size();
 				if (isPreMatchReview) 
 					paragraphCount -= 3;
+				String content = "";
 				
-				for (int i = 2 ; i < paragraphCount - 3; i++)
+				for (int i = 3 ; i < paragraphCount - 3; i++)
 				{
 					String line = paragraphElements.get(i).text();
 					if (line.isEmpty()) continue;
@@ -65,7 +71,7 @@ public class BBCScraper implements Scraper {
 						isLiveCommentary = true;
 						break;
 					}
-					System.out.println(line);
+					content += line;
 				}
 				
 				if (isLiveCommentary) continue;
@@ -76,6 +82,8 @@ public class BBCScraper implements Scraper {
 				article.setArticleURL(currURL);
 				article.setTitle(articleTitle);
 				article.setHeaderText(header);
+				article.setContent(content);
+				article.setDateTime(newDate);
 				
 				if (DEBUG == 1) {
 					System.out.println("Url : " + article.getArticleURL());

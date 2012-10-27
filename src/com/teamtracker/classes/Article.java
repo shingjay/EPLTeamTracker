@@ -9,7 +9,6 @@ public class Article {
 	private Date articleCreation;
 	private String articleURL;
 	private String imageURLS;
-	private String author;
 	private String headertext;
 	private int source;
 	
@@ -21,7 +20,6 @@ public class Article {
 	public Date getArticleCreation() { return articleCreation; }
 	public String getArticleURL() { return articleURL; }
 	public String getImageURLS() { return imageURLS; }
-	public String getAuthor() { return author; }
 	public String getHeaderText() { return headertext; }
 	
 	public void setSource(int source) { this.source = source; }
@@ -31,6 +29,12 @@ public class Article {
 	public void setDateTime(Date datetime) { this.articleCreation = datetime; }
 	public void setImageURLS(String urls) { this.imageURLS = urls; }	
 	public void setArticleURL(String url) { this.articleURL = url; }
-	public void setAuthor(String author) { this.author = author; }
 	public void setHeaderText(String headertext) { this.headertext = headertext; }
+	
+	public String toString() 
+	{
+		return "title :\t" + title + "\nheader :" +
+				"\t" + headertext + "\nurl :\t" + articleURL + "\nContent :\t" + content
+				+ "\nDate :\t" + articleCreation.toString(); 
+	}
 }

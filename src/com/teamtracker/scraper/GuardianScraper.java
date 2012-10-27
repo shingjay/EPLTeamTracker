@@ -94,7 +94,6 @@ public class GuardianScraper implements Scraper{
 				article.setArticleURL(e.getAttribute("web-url"));
 				article.setHeaderText(headerText);
 				article.setContent(body);
-				article.setAuthor(author);
 				articles.add(article);
 			}
 		} 
