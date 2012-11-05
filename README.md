@@ -5,7 +5,7 @@ Shing Jay Ong
 
 ###project for CS490: Web Info Retrieval class. 
 
-1. Scrap football articles from guardian.co.uk/football.
+1. Scrap football articles from guardian.co.uk/football, bbc.co.uk/football and espn soccernet.
 2. Store the scrapped data into the database.
 3. Then feed the NLTK the information regarding the teams.
 4. Classify articles in the database to teams through NLTK.
