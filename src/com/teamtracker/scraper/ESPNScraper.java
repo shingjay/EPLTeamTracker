@@ -13,6 +13,11 @@ import com.teamtracker.classes.Article;
 public class ESPNScraper implements Scraper {
 
 	private int DEBUG = 1;
+	private Date latestDate;
+	
+	public ESPNScraper(Date date) { 
+		this.latestDate = date;
+	}
 	
 	public ArrayList<Article> scrap() 
 	{

@@ -13,10 +13,18 @@ import com.teamtracker.classes.Article;
 
 public class BBCScraper implements Scraper {
 	
-	private int DEBUG = 0;
+	private int DEBUG = 1;
+	private Date latestdate;
+	
+	public BBCScraper(Date date) {
+		this.latestdate = date;
+	}
 	
 	public ArrayList<Article> scrap()  
 	{
+		if (DEBUG == 1) 
+			System.out.println("Start scraping from BBC with latestdate = " + latestdate.toString());
+		
 		ArrayList<Article> articles = new ArrayList<Article>();
 		String url = "http://www.bbc.co.uk/sport/0/football/";
 		String bbcURL = "http://www.bbc.co.uk";
@@ -28,8 +36,12 @@ public class BBCScraper implements Scraper {
 			Element headlineElement = doc.getElementById("more-news");
 			Elements headlineElements = headlineElement.getElementsByTag("a");
 			
+			int num = 0;
 			for (Element temp : headlineElements)
 			{
+				if (DEBUG == 1) 
+					System.out.println("Iterating through :" + num++ + "th time");
+				
 				boolean isPreMatchReview = false;
 				boolean isLiveCommentary = false;
 						
@@ -53,6 +65,7 @@ public class BBCScraper implements Scraper {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 				Date newDate = dateFormat.parse(date);
 				
+				if (newDate.before(this.latestdate) || newDate.equals(this.latestdate)) continue;
 				
 				Elements paragraphElements = _doc.getElementsByTag("p");
 				int paragraphCount = paragraphElements.size();

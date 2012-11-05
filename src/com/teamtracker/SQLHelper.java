@@ -2,6 +2,8 @@ package com.teamtracker;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
+
 import com.mysql.jdbc.Driver;
 import com.teamtracker.classes.Article;
 
@@ -9,12 +11,7 @@ public class SQLHelper {
 	
 	private Connection connection = null;
 	
-	public SQLHelper() 
-	{
-		//if (connection == null) 
-			//establishConnection();
-		
-	}
+	public SQLHelper() {}
 	
 	/***
 	 * method to establish a connection to the database via jdbc
@@ -50,6 +47,38 @@ public class SQLHelper {
 			return false;
 		}
 		return true;
+	}
+	
+	/***
+	 * gets the latest article's date in the database based on the source type and returns it
+	 * @param articleSource id of the article source
+	 * @return date
+	 */
+	public Date getLatestArticleDate(int articleSource)
+	{
+		String query = "SELECT DateModified FROM ARTICLE WHERE SourceID = " + articleSource + " ORDER BY DateModified DESC";
+		Date date = new Date();
+		PreparedStatement ps = null;
+		try {
+			ps = connection.prepareStatement(query);
+			ResultSet rs = ps.executeQuery(query);
+			while (rs.next())
+			{
+				date = rs.getTimestamp("dateModified");
+				break;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());						
+			return null;
+		}
+		finally {
+			try {
+				ps.close();
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+		return date;
 	}
 	
 	/***

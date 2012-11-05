@@ -16,7 +16,11 @@ import java.util.Date;
 public class GuardianScraper implements Scraper{
 	
 	private String apiKey = "4ujzha4x7ref5phcaxms7y56";
+	private Date latestDate;
 	
+	public GuardianScraper(Date date) {
+		this.latestDate = date;
+	}
 	
 	// time for illegal scraping!
 	public ArrayList<Article> scrap()
