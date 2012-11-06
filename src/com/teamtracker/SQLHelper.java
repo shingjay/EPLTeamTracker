@@ -64,9 +64,12 @@ public class SQLHelper {
 			ResultSet rs = ps.executeQuery(query);
 			while (rs.next())
 			{
-				date = rs.getTimestamp("dateModified");
+				if (rs.getTimestamp("dateModified") == null)
+					date = new Date();
+				else date = rs.getTimestamp("dateModified");
 				break;
 			}
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());						
 			return null;

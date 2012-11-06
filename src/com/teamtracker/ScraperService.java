@@ -40,12 +40,11 @@ public class ScraperService {
 	
 	public static void main(String[] args) {
 		ScraperService scraper = new ScraperService();
-		System.out.println(scraper.bbcDate.toString());
-		//ArrayList<Article> articles = gscraper.retrieveFromAPI();
-		//ArrayList<Article> earticles = escraper.scrap();
-		ArrayList<Article> barticles = scraper.bbcScraper.scrap();
+		//System.out.println(scraper.bbcDate.toString());
+		ArrayList<Article> articles = scraper.guardianScraper.retrieveFromAPI();
+		//ArrayList<Article> earticles = escraper.scrap();		
 		
-		//scraper.insertListToDatabase(barticles);
+		scraper.insertListToDatabase(articles);
 		
 //		scraper.helper.establishConnection();
 //		ArrayList<Article> selectquery = scraper.helper.selectUnsortedArticlesFromDB();
@@ -58,7 +57,7 @@ public class ScraperService {
 	
 	public void insertListToDatabase(ArrayList<Article> articles)
 	{
-		System.out.println("here");
+		System.out.println("Inserting list of articles into the database....");
 		helper.establishConnection();
 		String query = "INSERT INTO ARTICLE (Title,Header,Content,DateModified,ArticleURL,SourceID) VALUES (?,?,?,?,?,?)";
 		for (Article article : articles)
@@ -67,5 +66,6 @@ public class ScraperService {
 			helper.insertArticleToDB(query,article);
 		}
 		helper.closeConnection();
+		System.out.println("Completing insertion....");
 	}
 }

@@ -106,8 +106,7 @@ public class BBCScraper implements Scraper {
 					System.out.println("isPrematchreview " + isPreMatchReview);
 					System.out.println("isLiveCommentary " + isLiveCommentary);
 					System.out.println();
-				}
-				System.out.println();
+				}				
 				
 				articles.add(article);
 			}

@@ -10,6 +10,7 @@ import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.jsoup.Jsoup;
 import org.w3c.dom.*;
 import java.util.Date;
 
@@ -17,9 +18,11 @@ public class GuardianScraper implements Scraper{
 	
 	private String apiKey = "4ujzha4x7ref5phcaxms7y56";
 	private Date latestDate;
+	private int DEBUG = 1;
 	
 	public GuardianScraper(Date date) {
 		this.latestDate = date;
+		System.out.println(latestDate);
 	}
 	
 	// time for illegal scraping!
@@ -32,16 +35,22 @@ public class GuardianScraper implements Scraper{
 	public ArrayList<Article> retrieveFromAPI()
 	{
 		ArrayList<Article> articles = new ArrayList<Article>();
-		String apiURL = "http://content.guardianapis.com/search?section=football&format=xml&show-fields=body%2Ctrail-text%2Clive-blogging-now%2Cbyline&api-key=" + apiKey;
+		String apiURL = "http://content.guardianapis.com/search?section=football&format=xml&show-fields=body%2Clive-blogging-now%2Cbyline%2Ctrail-text&api-key=4ujzha4x7ref5phcaxms7y56";
+		System.out.println(apiURL);
 		try 
 		{
+			int count = 0;
 			DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
 			Document doc = dbuilder.parse(apiURL);
 			
 			NodeList articleNodes = doc.getElementsByTagName("content");
+
 			for (int i = 0 ; i < articleNodes.getLength() ; i++)
 			{
+				if (DEBUG == 1) 
+					System.out.println("Iteration number : " + count++);
+				
 				Article article = new Article();
 				article.setSource(1);
 				Node node = articleNodes.item(i);
@@ -89,20 +98,39 @@ public class GuardianScraper implements Scraper{
 				if (!hasBody) continue;
 				
 				//TODO: have to fix conversion to date
-				// being cheap - setting date to current time scraped instead of date published
-				//String tempDate = e.getAttribute("web-publication-date");
-				//Date d = new SimpleDateFormat("yy-MM-dd'T'HH:mm:ssZ",Locale.UK).parse(tempDate);
-				article.setDateTime(new Date());
+				String tempDate = e.getAttribute("web-publication-date");
+				Date d = new SimpleDateFormat("yyyy-MM-dd").parse(tempDate);
 				
-				article.setTitle(e.getAttribute("web-title"));
+				//if (d.before(latestDate)) continue;
+				
+				body = Jsoup.parse(body).text();
+				body.replaceAll("\\<.*?>","");
+				//System.out.println(body);
+					
+				String tempTitle = e.getAttribute("web-title");
+				if (tempTitle.contains("The Gallery")) continue;
+				
+				article.setDateTime(d);
+				article.setTitle(tempTitle);
 				article.setArticleURL(e.getAttribute("web-url"));
 				article.setHeaderText(headerText);
 				article.setContent(body);
+				
+				if (DEBUG == 1) {
+					System.out.println("Url : " + article.getArticleURL());
+					System.out.println("header: " + article.getHeaderText());
+					System.out.println("title: " + article.getTitle());
+					System.out.println("date : " + article.getArticleCreation());
+					//System.out.println("content: " + article.getContent());
+					System.out.println();
+				}
+				
 				articles.add(article);
 			}
 		} 
 		catch (Exception e) 
 		{
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
