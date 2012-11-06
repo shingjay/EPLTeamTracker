@@ -1,0 +1,1 @@
+1. download PyMySQL here: http://www.pymysql.org/
