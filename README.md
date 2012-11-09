@@ -14,6 +14,7 @@ Shing Jay Ong
 ###Future objectives:
 - use Sax XML parsing instead of DOM
 - write a scheduler to scrap at every day/hour
+	- scrap based on the times of the games. eg: scrap game results & reviews 1 hr+ after UCL/EPL games
 - batch insertion to db?
 - other sites to consider:
 	* Telegraph.co.uk
